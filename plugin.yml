@@ -1,0 +1,6 @@
+name: WeaponPlugin
+main: me.hammale.grenade.grenade
+version: 0.1
+author: [hammale]
+commands:
+  grenade:
