@@ -1,0 +1,45 @@
+################
+#POTION EFFECTS#
+################
+You can view a list of all potion effect ID's here:
+http://www.minecraftwiki.net/wiki/Potion_effects
+
+#############
+#ALL EFFECTS#
+#############
+1 = TNT (won't break blocks)
+2 = Spawn chicken
+3 = Spawn cow
+4 = Spawn creeper
+5 = Spawn cave spider
+6 = Spawn blaze
+7 = Spawn enderman
+8 = Spawn enderdragon
+9 = Spawn ghast
+10 = Spawn giant
+11 = Spawn iron golem
+12 = Spawn magma cube
+13 = Spawn mushroom cow
+14 = Spawn ocelot
+15 = Spawn pig
+16 = Spawn zombie pigman
+17 = Spawn sheep
+18 = Spawn silverfish
+19 = Spawn skeleton
+20 = Spawn slime
+21 = Spawn snowman
+22 = Spawn spider
+23 = Spawn squid
+24 = Spawn villager
+25 = Spawn wolf
+26 = Spawn zombie
+27 = Strike lightning
+28 = Molotov (won't burn blocks)
+29 = Whirlwind (throws players randomly)
+30 = Kick all players in radius with the message "GRENDAE!"
+31 = Freeze players
+32 = Rain down arrows
+33 = Lightning II
+34 = RPG (DOES NOT STACK!)
+35 = Glass thing
+36 = Turret
