@@ -4,8 +4,11 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.util.Vector;
+import org.bukkit.entity.Player;
 
 public class Turret {
 	
@@ -34,9 +37,10 @@ public class Turret {
 	private void logic() {		
 		id1 = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 			   public void run() {
-				   le.getLocation().setX(loc.getX());
-				   le.getLocation().setY(loc.getY());
-				   le.getLocation().setZ(loc.getZ());
+				   Location tmp = loc;
+				   tmp.setPitch(le.getLocation().getPitch());
+				   tmp.setYaw(le.getLocation().getYaw());
+				   le.teleport(tmp);
 //				   if(plugin.getTargets(loc).length > 0){
 //					   LivingEntity t = plugin.getTargets(loc)[ran.nextInt(plugin.getTargets(loc).length)];
 //					   Vector me = le.getVelocity();
@@ -46,12 +50,30 @@ public class Turret {
 //					   Arrow a = le.launchProjectile(Arrow.class);
 //					   a.setVelocity(le.getLocation().getDirection());				   
 //				   }
-				   le.getTargetBlock(null, 30);
+				   if(le.getNearbyEntities(10, 1, 10).size() > 0){
+					   Entity e = le.getNearbyEntities(10, 10, 10).get(ran.nextInt(le.getNearbyEntities(10, 10, 10).size()));
+					   if(e instanceof LivingEntity){
+						   if(!(e.getType() == EntityType.IRON_GOLEM)){
+							   IronGolem golem = (IronGolem) le;
+							   golem.setPlayerCreated(false);
+							   golem.setTarget((LivingEntity) e);
+							   le.launchProjectile(Arrow.class);
+						   }
+					   }
+				   }
+				   if(le.getHealth() < le.getMaxHealth()
+						   || le.isDead()){
+					   le.setHealth(le.getMaxHealth());
+				   }
 			   }
 		}, 5L, 5L);
 	}
 
 	private void stop(){
+		loc.getWorld().createExplosion(loc, 0F);
+		for(Player p : plugin.getNearbyPlayers(loc, 6)){
+			p.damage(8);
+		}
 		plugin.getServer().getScheduler().cancelTask(id);
 		plugin.getServer().getScheduler().cancelTask(id1);
 		le.remove();

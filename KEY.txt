@@ -1,12 +1,12 @@
-################
-#POTION EFFECTS#
-################
+##################
+##POTION EFFECTS##
+##################
 You can view a list of all potion effect ID's here:
 http://www.minecraftwiki.net/wiki/Potion_effects
 
-#############
-#ALL EFFECTS#
-#############
+###############
+##ALL EFFECTS##
+###############
 1 = TNT (won't break blocks)
 2 = Spawn chicken
 3 = Spawn cow
