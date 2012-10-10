@@ -1,6 +1,5 @@
 package me.hammale.grenade;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -39,8 +38,8 @@ public class projectile {
 	private void boom(){
 		plugin.items.remove(item);
 		plugin.getServer().getScheduler().cancelTask(taskId);
-		if(plugin.getConfig().get("Grenade.369.PotionEffects") != null){
-			for(String s : plugin.getConfig().getStringList("Grenade.369.PotionEffects")){
+		if(plugin.getConfig().get("Grenade." + item.getItemStack().getTypeId() + ".PotionEffects") != null){
+			for(String s : plugin.getConfig().getStringList("Grenade." + item.getItemStack().getTypeId() + ".PotionEffects")){
 				String[] split = s.split(":");
 				if(plugin.getNearbyPlayers(item.getLocation(), radius) != null){	
 					for(Player p : plugin.getNearbyPlayers(item.getLocation(), radius)){
@@ -54,8 +53,8 @@ public class projectile {
 	}
 
 	private void addEffects() {
-		if(plugin.getConfig().get("Grenade.369.Effects") != null){
-			for(int i : plugin.getConfig().getIntegerList("Grenade.369.Effects")){
+		if(plugin.getConfig().get("Grenade." + item.getItemStack().getTypeId() + ".Effects") != null){
+			for(int i : plugin.getConfig().getIntegerList("Grenade." + item.getItemStack().getTypeId() + ".Effects")){
 				if(i == 1){			
 					Entity e = item.getLocation().getWorld().spawnEntity(item.getLocation(), EntityType.PRIMED_TNT);
 					plugin.tnt.add(e.getEntityId());
@@ -155,9 +154,8 @@ public class projectile {
 							p.teleport(p.getLocation().add(0, 1, 0));
 					}				
 				}else if(i == 36){
-					for(LivingEntity g  : Arrays.asList(plugin.getNearbyGolems(item.getLocation(), radius))){
-						new Turret(plugin, g);
-					}
+					LivingEntity le = (LivingEntity) item.getLocation().getWorld().spawnEntity(item.getLocation(), EntityType.SNOWMAN); 
+					new Turret(plugin, le);
 				}
 			}
 		}	

@@ -2,13 +2,16 @@ package me.hammale.grenade;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -29,8 +32,19 @@ public class listener implements Listener {
 				&& e.getEntity().getType() == EntityType.PRIMED_TNT){
 			if(plugin.tnt.contains(e.getEntity().getEntityId())){
 				e.setYield(0);
+				e.setCancelled(true);
 			}
 		}
+	}
+	
+	@EventHandler
+	public void onSnowballHit(EntityDamageByEntityEvent e){
+        Entity entity = e.getDamager();
+        if(entity instanceof Snowball) {
+            if(plugin.golems.contains(((Snowball) e.getDamager()).getShooter().getEntityId())){
+            	e.setDamage(8);
+            }
+        }
 	}
 	
 	 @EventHandler
@@ -57,8 +71,8 @@ public class listener implements Listener {
 			     player.setItemInHand(eggItem);
 			     new RPG(plugin, fb);
 				 return;
-			 }		     
-		     
+			 }
+			 
 			 Item thrownItem = player.getWorld().dropItem(pLoc, throwStack);			 
 		     thrownItem.setVelocity(pLoc.getDirection());
 		     

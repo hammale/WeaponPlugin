@@ -27,6 +27,7 @@ public class grenade extends JavaPlugin {
 
 	public HashSet<String> frozen = new HashSet<String>();
 	public HashSet<Integer> tnt = new HashSet<Integer>();
+	public HashSet<Integer> golems = new HashSet<Integer>();
 
 	@Override
 	public void onEnable()
