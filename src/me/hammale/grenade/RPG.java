@@ -2,7 +2,6 @@ package me.hammale.grenade;
 
 import org.bukkit.Location;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Player;
 
 public class RPG {
 
@@ -14,6 +13,7 @@ public class RPG {
 	public RPG(grenade plugin, FallingBlock fb){
 		this.plugin = plugin;
 		this.fb = fb;
+		this.fb.setDropItem(false);
 		this.loc = fb.getLocation();
 		start();
 	}
@@ -36,12 +36,7 @@ public class RPG {
   	   	fb.remove();
   	   	fb.getLocation().getBlock().setTypeId(0);
   	   	fb.setDropItem(false);
-  	   	fb.getWorld().createExplosion(fb.getLocation(), 0F);
-  	   	for(Player p : plugin.getServer().getOnlinePlayers()){
-  	   		if(p.getLocation().distance(fb.getLocation()) <= 6){
-  	   			p.damage(8);
-  	   		}
-  	   	}
+  	   	plugin.fakeExplosion(loc, plugin.getRadius(34));
 	}
 	
 }

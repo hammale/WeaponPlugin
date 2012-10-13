@@ -3,6 +3,7 @@ package me.hammale.grenade;
 import java.util.Random;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -128,14 +129,15 @@ public class projectile {
 						startFreeze(p);
 					}
 				}else if(i == 32){
-					for (int x = 0; x < 15; x++) {
+					for (int x = 0; x < 30; x++) {
 						Location loc = item.getLocation();
-						loc.setY(loc.getY() + 15);
+						loc.setY(loc.getY() + 20);
 						loc.setX( loc.getX() + (ran.nextInt((2*radius)+1)-radius) );
 						loc.setZ( loc.getZ() + (ran.nextInt((2*radius)+1)-radius) );
 						loc.setPitch(-90);
-						Vector vec = new Vector(0, -1, 0);
-						item.getWorld().spawnArrow(loc, vec, 0.6f, 12f);
+						Vector vec = new Vector(0, -3, 0);
+						Arrow a = item.getWorld().spawnArrow(loc, vec, 0.6f, 12f);
+						a.setFireTicks(200);
 					}
 				}else if(i == 33){
 					for (int x = 0; x < 15; x++) {

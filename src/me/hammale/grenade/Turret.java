@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 public class Turret {
 	
@@ -25,9 +24,9 @@ public class Turret {
 	private void start() {
 		id = plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			   public void run() {
-				   stop();		   
+				   stop(); 
 			   }
-		}, 1200L);
+		}, 600L);
 		logic();
 	}
 	
@@ -38,19 +37,6 @@ public class Turret {
 				   tmp.setPitch(le.getLocation().getPitch());
 				   tmp.setYaw(le.getLocation().getYaw());
 				   le.teleport(tmp);
-				   /*
-				   if(le.getNearbyEntities(10, 1, 10).size() > 0){
-					   Entity e = le.getNearbyEntities(10, 10, 10).get(ran.nextInt(le.getNearbyEntities(10, 10, 10).size()));
-					   if(e instanceof LivingEntity){
-						   if(!(e.getType() == EntityType.SNOWMAN)){
-							   IronGolem golem = (IronGolem) le;
-							   golem.setPlayerCreated(false);
-							   golem.setTarget((LivingEntity) e);
-							   le.launchProjectile(Arrow.class);
-						   }
-					   }
-				   }
-				   */
 				   if(le.getHealth() < le.getMaxHealth()
 						   || le.isDead()){
 					   le.setHealth(le.getMaxHealth());
@@ -61,10 +47,7 @@ public class Turret {
 
 	private void stop(){
 		plugin.golems.remove(le.getEntityId());
-		loc.getWorld().createExplosion(loc, 0F);
-		for(Player p : plugin.getNearbyPlayers(loc, 6)){
-			p.damage(8);
-		}
+		plugin.fakeExplosion(loc, 6);
 		plugin.getServer().getScheduler().cancelTask(id);
 		plugin.getServer().getScheduler().cancelTask(id1);
 		le.remove();

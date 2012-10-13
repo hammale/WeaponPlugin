@@ -10,7 +10,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -107,48 +106,31 @@ public class grenade extends JavaPlugin {
 		return tmp;
 	}
 	
-	public LivingEntity[] getNearbyGolems(Location l, int radius){
+    public Entity[] getNearbyEntities(Location l, int radius){
         int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16))/16;
         HashSet<Entity> radiusEntities = new HashSet<Entity>();
             for (int chX = 0 -chunkRadius; chX <= chunkRadius; chX ++){
                 for (int chZ = 0 -chunkRadius; chZ <= chunkRadius; chZ++){
                     int x=(int) l.getX(),y=(int) l.getY(),z=(int) l.getZ();
                     for (Entity e : new Location(l.getWorld(),x+(chX*16),y,z+(chZ*16)).getChunk().getEntities()){
-                        if (e.getLocation().distance(l) <= radius && e.getLocation().getBlock() != l.getBlock()){
-                        	if(e instanceof LivingEntity){
-                        		LivingEntity le = (LivingEntity) e;
-                        		if(le.getType() == EntityType.IRON_GOLEM){
-                        			radiusEntities.add(e);
-                        		}
-                        	}
-                        }
+                        if (e.getLocation().distance(l) <= radius && e.getLocation().getBlock() != l.getBlock()) radiusEntities.add(e);
                     }
                 }
             }
-        return radiusEntities.toArray(new LivingEntity[radiusEntities.size()]);
+        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
     }
 	
-	public LivingEntity[] getTargets(Location l){
-		int radius = 20;
-        int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16))/16;
-        HashSet<Entity> radiusEntities = new HashSet<Entity>();
-            for (int chX = 0 -chunkRadius; chX <= chunkRadius; chX ++){
-                for (int chZ = 0 -chunkRadius; chZ <= chunkRadius; chZ++){
-                    int x=(int) l.getX(),y=(int) l.getY(),z=(int) l.getZ();
-                    for (Entity e : new Location(l.getWorld(),x+(chX*16),y,z+(chZ*16)).getChunk().getEntities()){
-                        if (e.getLocation().distance(l) <= radius && e.getLocation().getBlock() != l.getBlock()){
-                        	if(e instanceof LivingEntity){
-                        		LivingEntity le = (LivingEntity) e;
-                        		if(!(le.getType() == EntityType.IRON_GOLEM)){
-                        			radiusEntities.add(e);
-                        		}
-                        	}
-                        }
-                    }
-                }
-            }
-        return radiusEntities.toArray(new LivingEntity[radiusEntities.size()]);
-    }
+	public void fakeExplosion(Location loc, int radius){
+		loc.getWorld().createExplosion(loc, 0F);
+		for(Player p : getNearbyPlayers(loc, radius)){
+			p.damage(8);
+		}
+		for(Entity e : getNearbyEntities(loc, radius)){
+			if(e instanceof LivingEntity){
+				((LivingEntity) e).damage(8);
+			}
+		}
+	}
 	
 	public int getDelay(int id) {
 		return config.getInt("Grenade." + id + ".Delay");
